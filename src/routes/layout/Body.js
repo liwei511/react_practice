@@ -1,6 +1,7 @@
 import './Body.css';
 import React, { lazy, Component, Suspense } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { withRouter } from 'react-router';
 const Home = lazy(() => import('../Home'))
 const About = lazy(() => import('../About'))
 const User = lazy(() => import('../user/User'))
@@ -11,7 +12,7 @@ class Body extends Component {
   // Switch表示如果匹配到了路由，就不再往下面匹配了，如果不写Switch，则一直会匹配到404页面
   render() {
     return (
-      <div className="body">
+      <div className="body" key={this.props.location.key}>
         <Router>
           <Suspense fallback={<div>Loading...</div>}>
             <Switch>
@@ -27,4 +28,4 @@ class Body extends Component {
   }
 }
 
-export default Body;
+export default withRouter(Body);
