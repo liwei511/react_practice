@@ -2,6 +2,29 @@ import { Component } from 'react';
 
 // 没有做类型安全， 不安全的代码！
 class FilterableProductTable extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      filterText: 'ball',
+      inStockOnly: false
+    }
+    // 函数内使用class的this
+    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+    this.handleInStockChange = this.handleInStockChange.bind(this);
+  }
+
+  handleFilterTextChange(filterText) {
+    this.setState({
+      filterText: filterText
+    });
+  }
+
+  handleInStockChange(inStockOnly) {
+    this.setState({
+      inStockOnly
+    });
+  }
+
   render() {
     const PRODUCTS = [
       {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
@@ -13,20 +36,46 @@ class FilterableProductTable extends Component {
     ];
     return (
       <div>
-        <SearchBar />
-        <ProductTable products={PRODUCTS} />
+        <SearchBar
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+          onFilterTextChange={this.handleFilterTextChange}
+          onInStockChange={this.handleInStockChange}
+        />
+        <ProductTable
+          products={PRODUCTS}
+          filterText={this.state.filterText}
+          inStockOnly={this.state.inStockOnly}
+        />
       </div>
     );
   }
 }
 
 class SearchBar extends Component {
+  constructor(props) {
+    super(props);
+
+    // 如果不bind ‘this’，报：TypeError: Cannot read property 'props' of undefined
+    this.handleFilterTextChange = this.handleFilterTextChange.bind(this);
+    this.handleInStockChange = this.handleInStockChange.bind(this);
+  }
+
+  handleFilterTextChange(e) {
+    this.props.onFilterTextChange(e.target.value);
+  }
+
+  handleInStockChange(e) {
+    this.props.onInStockChange(e.target.checked)
+  }
   render() {
+    const filterText = this.props.filterText;
+    const inStockOnly = this.props.inStockOnly;
     return (
       <form>
-        <input type="text" placeholder="Search" />
+        <input type="text" placeholder="Search" value={filterText} onChange={this.handleFilterTextChange} />
         <p>
-          <input type="checkbox" />
+          <input type="checkbox" checked={inStockOnly} onChange={this.handleInStockChange} />
           {' '}
           Only show products in stock
         </p>
@@ -37,9 +86,15 @@ class SearchBar extends Component {
 
 class ProductTable extends Component {
   render() {
+    const filterText = this.props.filterText;
+    const inStockOnly = this.props.inStockOnly;
+
     const rows = [];
     let lastCategory = null; // products是一个按category排序的列表
     this.props.products.forEach((product) => {
+      if (product.name.indexOf(filterText) === -1 || (inStockOnly && !product.stocked)) {
+        return;
+      }
       if (product.category !== lastCategory) {
         rows.push(
           <ProductCategoryRow
@@ -59,8 +114,10 @@ class ProductTable extends Component {
     return (
       <table>
         <thead>
-          <th>Name</th>
-          <th>Price</th>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+          </tr>
         </thead>
         <tbody>
           {rows}
