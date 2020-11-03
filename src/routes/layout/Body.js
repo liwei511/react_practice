@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 const Home = lazy(() => import('../Home'))
 const About = lazy(() => import('../About'))
 const User = lazy(() => import('../user/User'))
+const Base = lazy(() => import('../base/Base'))
 const Error = lazy(() => import('../Error'))
 
 class Body extends Component {
@@ -19,6 +20,7 @@ class Body extends Component {
               <Route path="/" exact component={Home} />
               <Route path="/about" component={About} />
               <Route path="/user" component={User} />
+              <Route path="/base" component={Base} />
               <Route component={Error}></Route>
             </Switch>
           </Suspense>

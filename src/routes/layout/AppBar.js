@@ -16,6 +16,9 @@ class AppBar extends Component {
           <li>
             <Link to="/user">用户中心</Link>
           </li>
+          <li>
+            <Link to="/base">入门</Link>
+          </li>
         </ul>
       </div>
     )

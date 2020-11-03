@@ -1,4 +1,12 @@
 .bar {
   background-color: antiquewhite;
-  flex: 0 0 100px;
+  flex: 0 0 50px;
+  line-height: 3;
+}
+ul{
+  list-style-type:none;
+  margin:0;width:100%; }
+ul li{
+  width:80px;
+  float:left;
 }
