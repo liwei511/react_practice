@@ -1,5 +1,5 @@
 import './TicTacToe.css';
-import {Component} from 'react';
+import { Component } from 'react';
 
 class TicTacToe extends Component {
   constructor(props) {
@@ -24,9 +24,7 @@ class TicTacToe extends Component {
     const history = this.state.history;
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-
-
-
+    
     const winner = calculateWinner(current.squares);
     // 赢了或者有值return
     if (winner || squares[i]) {
@@ -49,9 +47,9 @@ class TicTacToe extends Component {
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
     const moves = history.map((sq, index) => {
-      const desc = index ? 
-      'Go to move #' + index:
-      'Go to game start';
+      const desc = index ?
+        'Go to move #' + index :
+        'Go to game start';
       return (
         <li key={index}>
           <button onClick={() => this.jumpTo(index)}>{desc}</button>
@@ -87,9 +85,9 @@ class Board extends Component {
     );
   }
 
-  
 
-  
+
+
 
   render() {
     return (
@@ -154,7 +152,7 @@ function calculateWinner(squares) {
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
       return squares[a];
     }
-    
+
   }
   return null;
 }
